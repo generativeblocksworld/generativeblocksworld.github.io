@@ -1,1 +1,297 @@
-Hello World
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generative Blocks World: Moving Things Around in Pictures</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: normal;
+            line-height: 1.3;
+        }
+
+        .authors {
+            text-align: center;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .affiliation {
+            text-align: center;
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .links {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .links a {
+            display: inline-block;
+            margin: 0 15px;
+            padding: 10px 25px;
+            background-color: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .links a:hover {
+            background-color: #1d4ed8;
+        }
+
+        h2 {
+            font-size: 1.8em;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: normal;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+        }
+
+        .abstract {
+            text-align: justify;
+            font-size: 1.05em;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .figures {
+            margin: 40px 0;
+        }
+
+        .figure {
+            margin: 40px 0;
+            text-align: center;
+        }
+
+        .figure-image {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .figure-title {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .figure-caption {
+            font-size: 0.95em;
+            color: #555;
+            text-align: justify;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .bibtex {
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        .bibtex pre {
+            margin: 0;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .authors {
+                font-size: 1em;
+            }
+
+            .links a {
+                display: block;
+                margin: 10px auto;
+                max-width: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Generative Blocks World: Moving Things Around in Pictures</h1>
+        
+        <div class="authors">
+            Vaibhav Vavilala, Seemandhar Jain, Rahul Vasanth, D.A. Forsyth, Anand Bhattad
+        </div>
+        
+        <div class="affiliation">
+            University of Illinois at Urbana-Champaign
+        </div>
+
+        <div class="links">
+            <a href="https://arxiv.org/abs/2506.20703" target="_blank">Paper</a>
+            <a href="https://github.com/vibe007/Generative-Blocks-World" target="_blank">Code (Coming Soon)</a>
+        </div>
+
+        <div class="figures">
+            <div class="figure">
+                <img src="assets/cat.jpg" alt="Teaser" class="figure-image">
+                <div class="figure-title">Figure 1: Teaser</div>
+                <div class="figure-caption">
+                    Given an input image (bottom left), we extract a set of 3D convex primitives (top left) that provide an editable and controllable representation of the scene. These primitives are used to generate new images that respect geometry, texture, and the text prompt. The first column shows the original input and its primitive decomposition. Subsequent columns show sequential edits: translating the cat to the left (second column), translating it to the right (third column), moving the yarn in front of the cat and shifting the camera toward the scene center (fourth column), and scaling up the cat's head (burgundy primitive; fifth column). Our method enables 3D-aware semantic image editing through intuitive manipulation of these learned primitives.
+                </div>
+            </div>
+        </div>
+
+        <h2>Abstract</h2>
+        <div class="abstract">
+            We describe Generative Blocks World to interact with the scene of a generated image by manipulating simple geometric abstractions. Our method represents scenes as assemblies of convex 3D primitives, and the same scene can be represented by different numbers of primitives, allowing an editor to move either whole structures or small details. Once the scene geometry has been edited, the image is generated by a flow-based method, which is conditioned on depth and a texture hint. Our texture hint takes into account the modified 3D primitives, exceeding the texture-consistency provided by existing techniques. These texture hints (a) allow accurate object and camera moves and (b) preserve the identity of objects. Our experiments demonstrate that our approach outperforms prior works in visual fidelity, editability, and compositional generalization.
+        </div>
+
+        <h2>Method</h2>
+
+        <div class="figures">
+            <div class="figure">
+                <img src="assets/method.jpg" alt="Method overview" class="figure-image">
+                <div class="figure-title">Figure 2: Method Overview</div>
+                <div class="figure-caption">
+                    <b>Top left:</b> We use convex decomposition models [1] to extract primitives from an input image. <b>Bottom:</b> Users can manipulate these primitives and the camera to define a new scene layout. We render the modified primitives into a depth map and generate a texture hint image. These serve as inputs to a pretrained depth-to-image model [2], which requires no fine-tuning (<b>Top right</b>). The generated image respects the modified geometry, preserves texture where possible, and remains aligned with the text prompt.
+                </div>
+            </div>
+        </div>
+
+        <h2>Results</h2>
+
+        <div class="figures">
+            <div class="figure">
+                <img src="assets/drag.jpg" alt="Comparison with DragDiffusion" class="figure-image">
+                <div class="figure-title">Figure 3: Comparison with DragDiffusion [3]</div>
+                <div class="figure-caption">
+                    <b>First row:</b> Given a scene (first column), we attempt to reposition objects using a recent point-based image editing method by drawing drag handles (second column). However, drag points are ambiguous: it is unclear whether the intended operation is translation or scaling. As a result, the output lacks geometric consistency (third column). E.g., the clock changes shape, and pushing it deeper into the scene fails to reduce its size appropriately; fine details on the can are lost. In contrast, Generative Blocks World infers 3D primitives (fourth column) that can be explicitly manipulated (fifth column), producing a plausible image that respects object geometry, scale, positioning, and texture (last column). We also compare with proprietary models in supplement. <b>Second row:</b> Drag Diffusion requires many arrows to place the objects. Notice how they are still not precisely where we want them, and there are shape and color mismatches on the rendered watermelon and potato. Our result respects both texture and geometry.
+                </div>
+            </div>
+
+            <div class="figure">
+                <img src="assets/LC.jpg" alt="Comparison with LooseControl" class="figure-image">
+                <div class="figure-title">Figure 4: Comparison with LooseControl [4]</div>
+                <div class="figure-caption">
+                    Existing work struggles with camera moves. Four scenes (<b>left</b> side of each pair), synthesized from the depth maps shown. In each case, the camera is moved to the right (<b>right</b> side of each pair), and the image is resynthesized. Note how, for LooseControl, the number of apples changes (first pair); the level of water in the glass changes and there is an extra ice cube (second pair); the duck changes (third pair); and an extra rock appears (fourth pair). In each case, our method shows the same scene from a different view, because the texture hint image is derived from the underlying geometry, and strongly constrains any change.
+                </div>
+            </div>
+
+            <div class="figure">
+                <img src="assets/hint.jpg" alt="Comparison with StableFlow" class="figure-image">
+                <div class="figure-title">Figure 5: Comparison with StableFlow [5]</div>
+                <div class="figure-caption">
+                    This figure compares our projection-based texture hints against StableFlow [5], which uses vital-layer key-value injection. <b>First two columns:</b> input primitives and image. <b>Third:</b> edited primitives. <b>Fourth:</b> synthesis from original depth, revealing consistent geometry but altered texture. <b>Fifth:</b> StableFlow's approach often changes texture or object identity. <b>Sixth:</b> our projection-based hints maintain texture fidelity despite edits. <b>Seventh:</b> combining both approaches sometimes improves fine detail recovery (e.g., the treasure chest).
+                </div>
+            </div>
+
+            <div class="figure">
+                <img src="assets/reve.jpg" alt="Comparison with Frontier Models" class="figure-image">
+                <div class="figure-title">Figure 6: Comparison with Frontier Models</div>
+                <div class="figure-caption">
+                    <b>First row, Left:</b> Source image. The next two columns show our primitive edits and the synthesized result. The arrow indicates a texture that our method reproduces faithfully, but others do not. The <b>fourth column</b> shows Reve (https://app.reve.com/), a commercial image generation system. We can prompt their model with 2D boxes to reposition objects, but we must manually estimate their size to take into account 3D perspective effects. With our 3D primitives, maintaining object scale is free. ChatGPT and Gemini do not have interaction mechanisms outside of text prompts and struggle to precisely move objects. Additionally, all 3 production methods added a "seconds hand" to the clock that wasn't in the original. Those methods were also unable to generate precise camera moves that we can in this work. The <b>second row</b> shows another example. Our method can precisely move objects while maintaining texture. Reve changed the orientation of the potato. ChatGPT was unable to move the objects where requested (we tried variations of "move the watermelon to the top left, move the potato to the bottom right"). Gemini succeeded in this example.
+                </div>
+            </div>
+
+            <div class="figure">
+                <img src="assets/can.jpg" alt="Additional Move Object Example" class="figure-image">
+                <div class="figure-title">Figure 7: Additional Move Object Example</div>
+                <div class="figure-caption">
+                    <b>Editable Primitives as a Structured Depth Prior for Generative Models.</b> Our method uses 3D convex primitives as an editable intermediate representation from which depth maps are derived. These depth maps (shown as insets in the top row) are used to condition a pretrained depth-to-image generative model. The top row shows primitive configurations after sequential edits—translation, scaling, deletion, and camera motion—alongside their corresponding derived depth maps. The bottom row shows the resulting synthesized images. Unlike direct depth editing, which is unintuitive and underconstrained, manipulating primitives offers a structured, interpretable, and geometry-aware interface for controllable image generation.
+                </div>
+            </div>
+
+            <div class="figure">
+                <img src="assets/move.jpg" alt="Confidence Map Visualization" class="figure-image">
+                <div class="figure-title">Figure 8: Confidence Map Visualization</div>
+                <div class="figure-caption">
+                    <b>Applying same primitive edit for different text prompts at coarse scale (K = 8 parts).</b> First two columns contain source primitives and depth (first two columns); the confidence mask for hint generation, followed by four source RGB images. Second row shows the modified primitives and depth, followed by the hint image x<sub>hint</sub>, followed by the four corresponding edited images. At coarse scales, moving a primitive can move a lot of texture at once. Observe how our hint generation procedure automatically yields confidence masks and hints, assigning low confidence to boundaries of primitives that moved (e.g., the dog's hair) and reveals holes when moving objects. The image model cleans up the low-confidence regions and even handles blurry or aliased texture in the hint when t<sub>end</sub> > 0, meaning that the hint is not used for some denoising steps.
+                </div>
+            </div>
+
+            <div class="figure">
+                <img src="assets/lora.jpg" alt="Effects of LoRA weight" class="figure-image">
+                <div class="figure-title">Figure 9: Effects of LoRA Weight</div>
+                <div class="figure-caption">
+                    Our model is compatible with most depth-image synthesizers. While a pretrained FLUX works out of the box, LoRA weights on top of the base FLUX model are available (FLUX.1 Depth [dev] LoRA), exposing a new lora_weight parameter (scaling the activations of the LoRA layers). This is intriguing in the context of our primitives, because they can either be used to coarsely model scene geometry (e.g. lora_weight near 0.8, <b>second last column</b>), leaving details to the image synthesizer, or they can tightly control the result when lora_weight is close to 1 (<b>final column</b>).
+                </div>
+            </div>
+        </div>
+
+        <h2>References</h2>
+        <div class="bibtex">
+            <pre>[1] Vaibhav Vavilala, Florian Kluger, Seemandhar Jain, Bodo Rosenhahn, Anand Bhattad, David Forsyth. 
+    "Improved Convex Decomposition with Ensembling and Boolean Primitives." arXiv:2405.19569, 2025.
+
+[2] Black Forest Labs. "FLUX.1-dev: A 12 B-parameter text-to-image flow-matching model." 2025.
+
+[3] Yujun Shi, Chuhui Xue, Jun Hao Liew, Jiachun Pan, Hanshu Yan, Wenqing Zhang, Vincent Y. F. Tan, Song Bai. 
+    "DragDiffusion: Harnessing Diffusion Models for Interactive Point-based Image Editing." CVPR 2024.
+
+[4] Shariq Farooq Bhat, Niloy Mitra, Peter Wonka. 
+    "LOOSECONTROL: Lifting ControlNet for Generalized Depth Conditioning." SIGGRAPH 2024.
+
+[5] Omri Avrahami, Or Patashnik, Ohad Fried, Egor Nemchinov, Kfir Aberman, Dani Lischinski, Daniel Cohen-Or. 
+    "Stable Flow: Vital Layers for Training-Free Image Editing." CVPR 2025.</pre>
+        </div>
+
+        <h2>Citation</h2>
+        <div class="bibtex">
+            <pre>@misc{vavilala2025generativeblocksworldmoving,
+      title={Generative Blocks World: Moving Things Around in Pictures}, 
+      author={Vaibhav Vavilala and Seemandhar Jain and Rahul Vasanth and D. A. Forsyth and Anand Bhattad},
+      year={2025},
+      eprint={2506.20703},
+      archivePrefix={arXiv},
+      primaryClass={cs.GR},
+      url={https://arxiv.org/abs/2506.20703}, 
+}</pre>
+        </div>
+
+    </div>
+</body>
+</html>
